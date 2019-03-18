@@ -30,8 +30,13 @@ class RestaurantsListViewController: UIViewController, Storyboarded
         s.delegate = self
         return s
     }()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        let refreshControl = UIRefreshControl(frame: .zero)
+        refreshControl.addTarget(self, action: #selector(refreshControlChanged), for: .valueChanged)
+        tableView.refreshControl = refreshControl
         tableView.tableHeaderView = searchBar
         tableView.dataSource = self
         tableView.delegate = self
@@ -39,6 +44,9 @@ class RestaurantsListViewController: UIViewController, Storyboarded
         loadRestaurants()
     }
 
+    @IBAction func refreshControlChanged() {
+        loadRestaurants()
+    }
     
     @IBAction func changeButtonTapped(_ sender: Any) {
         let locationVC = LocationPickerViewController.instantiate()
@@ -49,16 +57,17 @@ class RestaurantsListViewController: UIViewController, Storyboarded
         let request = RestaruntFetchRequest.init(latitude: self.location.latitude, longitude: self.location.longitude, radius: 50)
         
         request.execute { result in
-            if let error = result.error() {
-                print("error while fetch \(error)")
-                return
-            }
-            if let value = result.get() {
-                self.list = value.restaurants
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
+            DispatchQueue.main.async {
+                self.tableView.refreshControl?.endRefreshing()
+                if let error = result.error() {
+                    print("error while fetch \(error)")
+                    return
                 }
-                return
+                if let value = result.get() {
+                    self.list = value.restaurants
+                    self.tableView.reloadData()
+                    return
+                }
             }
         }
     }
