@@ -9,13 +9,93 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Hypto/API/RestarauntFetchRequest.swift"
-            timestampString = "574320812.887113"
+            filePath = "Hypto/ViewController/LocationPickerViewController.swift"
+            timestampString = "574595816.355855"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "69"
-            endingLineNumber = "69"
-            landmarkName = "init(from:)"
+            startingLineNumber = "95"
+            endingLineNumber = "95"
+            landmarkName = "searchBar(_:textDidChange:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Hypto/ViewController/LocationPickerViewController.swift"
+            timestampString = "574595816.356235"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
+            landmarkName = "fetchPlaces(searchText:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Hypto.Result&lt;Hypto.PlacesPredictions&gt;) -&gt; () in Hypto.LocationPickerViewController.(fetchPlaces in _1B513FFA80F5AE59275812A7DA3A9C42)(searchText: Swift.String) -&gt; ()"
+                  moduleName = "Hypto"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vignesh-3039/Desktop/__Swift/Hypto/Hypto/ViewController/LocationPickerViewController.swift"
+                  timestampString = "574595816.544084"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59"
+                  offsetFromSymbolStart = "40">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in closure #1 (Hypto.Result&lt;Hypto.PlacesPredictions&gt;) -&gt; () in Hypto.LocationPickerViewController.(fetchPlaces in _1B513FFA80F5AE59275812A7DA3A9C42)(searchText: Swift.String) -&gt; ()"
+                  moduleName = "Hypto"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vignesh-3039/Desktop/__Swift/Hypto/Hypto/ViewController/LocationPickerViewController.swift"
+                  timestampString = "574595816.546635"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "60"
+                  endingLineNumber = "60"
+                  offsetFromSymbolStart = "52">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Hypto/ViewController/LocationPickerViewController.swift"
+            timestampString = "574595816.356493"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "60"
+            endingLineNumber = "60"
+            landmarkName = "fetchPlaces(searchText:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Hypto/ViewController/LocationPickerViewController.swift"
+            timestampString = "574595816.356739"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
+            landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

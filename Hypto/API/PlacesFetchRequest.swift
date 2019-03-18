@@ -5,9 +5,18 @@
 //  Created by Vigneshkumar G on 14/03/19.
 //  Copyright © 2019 viki. All rights reserved.
 //
+import Foundation
 
-struct PlacesPredictions: Decodable {
+struct PlacesPredictions: Decodable, DataInitial {
     let predictions: [Prediction]
+    
+    static func instantiate(from data: Data) -> PlacesPredictions? {
+        do {
+            return try JSONDecoder().decode(PlacesPredictions.self, from: data)
+        } catch  {
+            return nil
+        }
+    }
 }
 
 struct Prediction: Decodable {
@@ -15,9 +24,10 @@ struct Prediction: Decodable {
     let id: String
 }
 
+
 struct PlacesFetchRequest: Request  {
     
-    typealias Response = String
+    typealias Response = PlacesPredictions
     
     var url: String {
         return "https://maps.googleapis.com/maps/api/place/autocomplete/json"

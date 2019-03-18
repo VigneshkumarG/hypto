@@ -25,35 +25,46 @@ class LocationPickerViewController: UIViewController, Storyboarded
     
     @IBOutlet weak var tableView: UITableView!
     
-    private lazy var headerButton: UIButton = {
-        let frame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: 44)
-        let b = UIButton(frame: frame)
-        b.backgroundColor = UIColor.white
-        b.setTitleColor(self.view.tintColor, for: .normal)
-        b.titleLabel?.textAlignment = .left
-        b.setTitle("Use Current location", for: .normal)
-        b.addTarget(self, action: #selector(currentLocationButtonTapped), for: .touchUpInside)
-        return b
+    private lazy var searchBar: UISearchBar = {
+        let s = UISearchBar(frame: .init(x: 0, y: 0, width: view.bounds.width, height: 44))
+        s.placeholder = "Start typing"
+        s.delegate = self
+        return s
     }()
     
     var places = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.tableHeaderView = headerButton
+        tableView.tableHeaderView = searchBar
+        tableView.dataSource = self
+        tableView.delegate = self
     }
     
+    @IBAction func currentLocationTapped(_ sender: Any) {
+        sendLocation()
+    }
     
     @IBAction func backButtonTapped(_ sender: Any) {
         navigationController?.popViewController(animated: true)
     }
-    
-    @objc func currentLocationButtonTapped()  {
-        sendLocation()
-    }
-    
+
     func sendLocation()  {
 //        delegate?.locationPicked(location: Location(latitude: "", longitude: "test", address: "test"))
+    }
+    
+    private func fetchPlaces(searchText: String) {
+        let request = PlacesFetchRequest.init(searchString: searchText)
+        request.execute { result in
+            DispatchQueue.main.async {
+                if let value = result.get() {
+                    self.places = value.predictions.map({ prediction -> String  in
+                        return prediction.description
+                    })
+                    self.tableView.reloadData()
+                }
+            }
+        }
     }
 }
 
@@ -75,5 +86,12 @@ extension LocationPickerViewController: UITableViewDataSource, UITableViewDelega
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         sendLocation()
+    }
+}
+
+extension LocationPickerViewController: UISearchBarDelegate
+{
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        fetchPlaces(searchText: searchBar.text ?? "")
     }
 }

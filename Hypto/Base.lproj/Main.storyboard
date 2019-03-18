@@ -165,11 +165,20 @@
                                             <action selector="backButtonTapped:" destination="680-Mk-H2e" eventType="touchUpInside" id="Lb7-th-0us"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sC7-rx-Dla">
+                                        <rect key="frame" x="214" y="7" width="146" height="30"/>
+                                        <state key="normal" title="Use Current Location"/>
+                                        <connections>
+                                            <action selector="currentLocationTapped:" destination="680-Mk-H2e" eventType="touchUpInside" id="0gN-DT-tnX"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.96650256849315064" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="sC7-rx-Dla" firstAttribute="centerY" secondItem="OL7-Wg-n3j" secondAttribute="centerY" id="DVC-aR-z5G"/>
                                     <constraint firstItem="WgF-1A-YdU" firstAttribute="centerY" secondItem="OL7-Wg-n3j" secondAttribute="centerY" id="FSo-62-FEw"/>
                                     <constraint firstItem="WgF-1A-YdU" firstAttribute="leading" secondItem="OL7-Wg-n3j" secondAttribute="leading" constant="16" id="aAr-GS-erQ"/>
+                                    <constraint firstAttribute="trailing" secondItem="sC7-rx-Dla" secondAttribute="trailing" constant="15" id="kVn-s8-Elc"/>
                                     <constraint firstAttribute="height" constant="44" id="xJ3-VH-Obq"/>
                                 </constraints>
                             </view>
