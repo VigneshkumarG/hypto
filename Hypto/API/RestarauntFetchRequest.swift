@@ -20,7 +20,9 @@ struct RestaruntFetchRequest: Request {
         return [
             "lat":"\(latitude)",
             "lon":"\(longitude)",
-            "radius":"\(radius)"
+            "radius":"\(radius)",
+            "count":"20",
+            "start":"\(start)"
         ]
     }
     
@@ -33,11 +35,28 @@ struct RestaruntFetchRequest: Request {
     let latitude: Double
     let longitude: Double
     let radius: Int
+    let start: Int
 }
 
 
 struct RestaruntResponse: Decodable {
     let restaurants: [Restarunt]
+    let resultsFound: Int
+    let resultsStart: Int
+    let resultShown: Int
+    
+    private enum CodingKeys: String, CodingKey {
+        case restaurants
+        case resultsFound = "results_found"
+        case resultsStart = "results_start"
+        case resultShown = "results_shown"
+    }
+    
+    var hasLoadMore: Bool {
+        return (resultsStart + resultShown) < resultsFound
+    }
+    
+    var loadMoreTriggered: Bool = false
 }
 
 extension RestaruntResponse: DataInitial {

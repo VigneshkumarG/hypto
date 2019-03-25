@@ -22,6 +22,13 @@ struct PlacesPredictions: Decodable, DataInitial {
 struct Prediction: Decodable {
     let description: String
     let id: String
+    let placeID: String
+    
+    private enum CodingKeys: String, CodingKey {
+        case description
+        case id
+        case placeID = "place_id"
+    }
 }
 
 

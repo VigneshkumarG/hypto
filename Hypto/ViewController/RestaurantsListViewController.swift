@@ -11,7 +11,7 @@ import UIKit
 
 class RestaurantsListViewController: UIViewController, Storyboarded
 {
-    private let location: Location = Location(latitude: 12.23243, longitude: 12.24323, address: "Chennai")
+    private var location: Location = Location(latitude: 12.23243, longitude: 12.24323, address: "Chennai")
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var locationLabel: UILabel!
@@ -20,7 +20,9 @@ class RestaurantsListViewController: UIViewController, Storyboarded
             filteredList = list
         }
     }
+    private var listResponse: RestaruntResponse? = nil
     private var filteredList: [Restarunt] = []
+    private var loadMoreTriggered: Bool = false
     
     lazy var searchBar: UISearchBar = {
         let frame = CGRect(x: 0, y: 0, width: 0, height: 50)
@@ -50,21 +52,24 @@ class RestaurantsListViewController: UIViewController, Storyboarded
     
     @IBAction func changeButtonTapped(_ sender: Any) {
         let locationVC = LocationPickerViewController.instantiate()
+        locationVC.delegate = self
         navigationController?.pushViewController(locationVC, animated: true)
     }
     
-    private func loadRestaurants() {
-        let request = RestaruntFetchRequest.init(latitude: self.location.latitude, longitude: self.location.longitude, radius: 50)
+    private func loadRestaurants(start: Int = 0) {
+        let request = RestaruntFetchRequest.init(latitude: self.location.latitude, longitude: self.location.longitude, radius: 50, start: start)
         
         request.execute { result in
             DispatchQueue.main.async {
+                self.loadMoreTriggered = false
                 self.tableView.refreshControl?.endRefreshing()
                 if let error = result.error() {
                     print("error while fetch \(error)")
                     return
                 }
                 if let value = result.get() {
-                    self.list = value.restaurants
+                    self.listResponse = value
+                    self.list.append(contentsOf: value.restaurants)
                     self.tableView.reloadData()
                     return
                 }
@@ -87,6 +92,17 @@ extension RestaurantsListViewController: UITableViewDataSource, UITableViewDeleg
         let cell = tableView.dequeueReusableCell(withIdentifier: "RestaurantTableCell", for: indexPath) as! RestaurantTableCell
         cell.set(restaurant: filteredList[indexPath.row])
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == ( list.count - 1) {
+            // last cell
+            if let listResponse = listResponse, listResponse.hasLoadMore, !loadMoreTriggered {
+                loadMoreTriggered = true
+                let nextStart = listResponse.resultsStart + listResponse.resultShown
+                loadRestaurants(start: nextStart)
+            }
+        }
     }
 }
 
@@ -112,54 +128,11 @@ extension RestaurantsListViewController: UISearchBarDelegate
     }
 }
 
-
-class RestaurantTableCell: UITableViewCell {
-  
-    lazy var photoView: UIImageView = {
-        let img = UIImageView()
-        img.translatesAutoresizingMaskIntoConstraints = false
-        return img
-    }()
-    
-    @IBOutlet weak var photoHolderView: UIView!
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var ratingLabel: UILabel!
-    
-    private var model: Restarunt? = nil
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        photoHolderView.addSubview(photoView)
-        NSLayoutConstraint.activate([
-            photoView.leadingAnchor.constraint(equalTo: photoHolderView.leadingAnchor),
-            photoView.trailingAnchor.constraint(equalTo: photoHolderView.trailingAnchor),
-            photoView.topAnchor.constraint(equalTo: photoHolderView.topAnchor),
-            photoView.bottomAnchor.constraint(equalTo: photoHolderView.bottomAnchor),
-            ])
-    }
-    
-    func set(restaurant: Restarunt)  {
-        self.model = restaurant
-        nameLabel.text = restaurant.name
-        ratingLabel.text = restaurant.ratingText
-        guard let _ = URL(string: restaurant.featured_image) else {
-//            photoView.image = UIImage(named: "template.jpg")
-            return
-        }
-        let request = HTTPRequest(url: restaurant.featured_image, parameters: [:])
-        request.execute { result in
-            if let data = result.get(), let image = UIImage(data: data) {
-                DispatchQueue.main.async {
-                    if self.model == restaurant {
-                        self.photoView.image = image
-                    }
-                }
-            }
-        }
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        self.photoView.image = nil
+extension RestaurantsListViewController: LocationPickerDelegate
+{
+    func locationPicked(location: Location) {
+        self.location = location
+        loadRestaurants()
+        locationLabel.text = location.address
     }
 }

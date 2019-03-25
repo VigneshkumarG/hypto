@@ -17,6 +17,7 @@
 		F21B086E223A848100F03412 /* Storyboarded.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21B086D223A848100F03412 /* Storyboarded.swift */; };
 		F21B0870223A96D800F03412 /* RestarauntFetchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21B086F223A96D800F03412 /* RestarauntFetchRequest.swift */; };
 		F21B0872223B6D7600F03412 /* template.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F21B0871223B6D7600F03412 /* template.jpg */; };
+		F22E1FF22248C423003F09D1 /* RestaurantTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F22E1FF12248C423003F09D1 /* RestaurantTableCell.swift */; };
 		F2D678F02232EC6E000A0711 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D678EF2232EC6E000A0711 /* AppDelegate.swift */; };
 		F2D678F22232EC6E000A0711 /* RestaurantsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D678F12232EC6E000A0711 /* RestaurantsListViewController.swift */; };
 		F2D678F52232EC6E000A0711 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F2D678F32232EC6E000A0711 /* Main.storyboard */; };
@@ -37,6 +38,7 @@
 		F21B086D223A848100F03412 /* Storyboarded.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storyboarded.swift; sourceTree = "<group>"; };
 		F21B086F223A96D800F03412 /* RestarauntFetchRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestarauntFetchRequest.swift; sourceTree = "<group>"; };
 		F21B0871223B6D7600F03412 /* template.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = template.jpg; sourceTree = "<group>"; };
+		F22E1FF12248C423003F09D1 /* RestaurantTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantTableCell.swift; sourceTree = "<group>"; };
 		F2D678EC2232EC6E000A0711 /* Hypto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hypto.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2D678EF2232EC6E000A0711 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F2D678F12232EC6E000A0711 /* RestaurantsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantsListViewController.swift; sourceTree = "<group>"; };
@@ -97,6 +99,14 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
+		F22E1FF32248C431003F09D1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F22E1FF12248C423003F09D1 /* RestaurantTableCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		F2D678E32232EC6E000A0711 = {
 			isa = PBXGroup;
 			children = (
@@ -119,6 +129,7 @@
 				F21B085A223A622100F03412 /* Hypto.playground */,
 				F2D678EF2232EC6E000A0711 /* AppDelegate.swift */,
 				F21B0871223B6D7600F03412 /* template.jpg */,
+				F22E1FF32248C431003F09D1 /* Views */,
 				F21B086C223A846D00F03412 /* Protocols */,
 				F21B085C223A7DF600F03412 /* App */,
 				F21B085B223A7DE400F03412 /* API */,
@@ -215,6 +226,7 @@
 				F2D679022232EE3B000A0711 /* LocationPickerViewController.swift in Sources */,
 				F21B0866223A7F6D00F03412 /* PlacesFetchRequest.swift in Sources */,
 				F2D678F02232EC6E000A0711 /* AppDelegate.swift in Sources */,
+				F22E1FF22248C423003F09D1 /* RestaurantTableCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

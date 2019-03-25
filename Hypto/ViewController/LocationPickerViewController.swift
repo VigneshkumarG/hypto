@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 struct Location {
     let latitude: Double
@@ -20,6 +21,7 @@ protocol LocationPickerDelegate: class {
 
 class LocationPickerViewController: UIViewController, Storyboarded
 {
+    private var locationManager: CLLocationManager!
     
     weak var delegate: LocationPickerDelegate?
     
@@ -32,25 +34,52 @@ class LocationPickerViewController: UIViewController, Storyboarded
         return s
     }()
     
-    var places = [String]()
+    private var predictions: [Prediction] = []
+    private var currentLocation: CLLocation? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setupCoreLocation()
+        
         tableView.tableHeaderView = searchBar
         tableView.dataSource = self
         tableView.delegate = self
     }
     
+    private func setupCoreLocation(){
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.distanceFilter = 500
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+    }
+    
     @IBAction func currentLocationTapped(_ sender: Any) {
-        sendLocation()
+        if let clLocation = currentLocation {
+            self.delegate?.locationPicked(location: Location.init(latitude: clLocation.coordinate.latitude, longitude: clLocation.coordinate.longitude, address: "Current Location"))
+            self.navigationController?.popViewController(animated: true)
+        }
     }
     
     @IBAction func backButtonTapped(_ sender: Any) {
         navigationController?.popViewController(animated: true)
     }
 
-    func sendLocation()  {
-//        delegate?.locationPicked(location: Location(latitude: "", longitude: "test", address: "test"))
+    func sendLocation(placeID: String)  {
+        let request = PlaceDetailsFetchRequest.init(placeid: placeID)
+        request.execute { result in
+            DispatchQueue.main.async {
+                if let value = result.get() {
+                    self.delegate?.locationPicked(location: Location.init(latitude: value.latitude, longitude: value.longitude, address: value.formattedAddress))
+                    self.navigationController?.popViewController(animated: true)
+                }
+                if let error = result.error() {
+                    print(error.localizedDescription)
+                }
+            }
+        }
     }
     
     private func fetchPlaces(searchText: String) {
@@ -58,9 +87,7 @@ class LocationPickerViewController: UIViewController, Storyboarded
         request.execute { result in
             DispatchQueue.main.async {
                 if let value = result.get() {
-                    self.places = value.predictions.map({ prediction -> String  in
-                        return prediction.description
-                    })
+                    self.predictions = value.predictions
                     self.tableView.reloadData()
                 }
             }
@@ -75,17 +102,17 @@ extension LocationPickerViewController: UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return places.count
+        return predictions.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "placeCell", for: indexPath)
-        cell.textLabel?.text = places[indexPath.row]
+        cell.textLabel?.text = predictions[indexPath.row].description
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        sendLocation()
+        sendLocation(placeID: predictions[indexPath.row].placeID)
     }
 }
 
@@ -93,5 +120,17 @@ extension LocationPickerViewController: UISearchBarDelegate
 {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         fetchPlaces(searchText: searchBar.text ?? "")
+    }
+}
+
+extension LocationPickerViewController: CLLocationManagerDelegate
+{
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        currentLocation = locations.first
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error)
     }
 }

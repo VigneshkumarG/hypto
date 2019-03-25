@@ -46,9 +46,9 @@ extension Request {
         let request = makeRequest()
         let session = URLSession.shared
         let task = session.dataTask(with: request) { (data, urlResponse, error) in
-            if let data = data {
-                let response = Response.instantiate(from: data)
-                completion(Result.success(response!))
+            if let data = data, let response = Response.instantiate(from: data) {
+//                print(String(data: data, encoding: .utf8)!)
+                completion(Result.success(response))
                 return
             }
             if let error = error {
